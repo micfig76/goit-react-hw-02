@@ -2,25 +2,23 @@ import React, { useState } from "react";
 import Description from "./components/Description/Description";
 import Options from "./components/Options/Options";
 import Feedback from "./components/Feedback/Feedback";
+import Notification from "./components/Notification/Notification";
 import "./App.css";
 
 function App() {
   const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
-
   const handleGoodFeedback = () => {
     setFeedback((prevFeedback) => ({
       ...prevFeedback,
       good: prevFeedback.good + 1,
     }));
   };
-
   const handleNeutralFeedback = () => {
     setFeedback((prevFeedback) => ({
       ...prevFeedback,
       neutral: prevFeedback.neutral + 1,
     }));
   };
-
   const handleBadFeedback = () => {
     setFeedback((prevFeedback) => ({
       ...prevFeedback,
@@ -30,9 +28,11 @@ function App() {
   const handleResetFeedback = () => {
     setFeedback({ good: 0, neutral: 0, bad: 0 });
   };
-
   const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
-
+  const positivePercentage = totalFeedback
+    ? Math.round((feedback.good / totalFeedback) * 100)
+    : 0;
+  const hasFeedback = totalFeedback > 0;
   return (
     <div>
       <Description
@@ -45,9 +45,16 @@ function App() {
         onNeutralFeedback={handleNeutralFeedback}
         onBadFeedback={handleBadFeedback}
         onResetFeedback={handleResetFeedback}
+        hasFeedback={hasFeedback}
       />
-      {totalFeedback > 0 && (
-        <Feedback feedback={feedback} total={totalFeedback} />
+      {hasFeedback ? (
+        <Feedback
+          feedback={feedback}
+          total={totalFeedback}
+          positivePercentage={positivePercentage}
+        />
+      ) : (
+        <Notification message="No feedback yet" />
       )}
     </div>
   );

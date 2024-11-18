@@ -1,11 +1,17 @@
 import React from "react";
-function Options({ updateFeedback, onResetFeedback }) {
+function Options({
+  onGoodFeedback,
+  onNeutralFeedback,
+  onBadFeedback,
+  onResetFeedback,
+  hasFeedback,
+}) {
   return (
     <div>
-      <button onClick={() => updateFeedback("good")}>Good</button>
-      <button onClick={() => updateFeedback("neutral")}>Neutral</button>
-      <button onClick={() => updateFeedback("bad")}>Bad</button>
-      <button onClick={onResetFeedback}>Reset</button>
+      <button onClick={onGoodFeedback}>Good</button>
+      <button onClick={onNeutralFeedback}>Neutral</button>
+      <button onClick={onBadFeedback}>Bad</button>
+      {hasFeedback && <button onClick={onResetFeedback}>Reset</button>}
     </div>
   );
 }
